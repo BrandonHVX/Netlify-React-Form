@@ -1,14 +1,26 @@
-import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import { List, ListItem, ListItemText } from '@material-ui/core/';
-import Button from '@material-ui/core/Button';
-
+import React, { Component } from "react";
+import Dialog from "@material-ui/core/Dialog";
+import AppBar from "@material-ui/core/AppBar";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import { List, ListItem, ListItemText } from "@material-ui/core/";
+import Button from "@material-ui/core/Button";
+const encode = data => {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+};
 export class Confirm extends Component {
   continue = e => {
     e.preventDefault();
-    // PROCESS FORM //
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: encode({ "form-name": "contact", ...this.state })
+    })
+      .then(() => alert("Success!"))
+      .catch(error => alert(error));
+
+    e.preventDefault();
     this.props.nextStep();
   };
 
@@ -24,11 +36,7 @@ export class Confirm extends Component {
     return (
       <MuiThemeProvider>
         <>
-          <Dialog
-            open
-            fullWidth
-            maxWidth='sm'
-          >
+          <Dialog open fullWidth maxWidth="sm">
             <AppBar title="Confirm User Data" />
             <List>
               <ListItem>
@@ -52,17 +60,13 @@ export class Confirm extends Component {
             </List>
             <br />
 
-            <Button
-              color="secondary"
-              variant="contained"
-              onClick={this.back}
-            >Back</Button>
+            <Button color="secondary" variant="contained" onClick={this.back}>
+              Back
+            </Button>
 
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={this.continue}
-            >Confirm & Continue</Button>
+            <Button color="primary" variant="contained" onClick={this.continue}>
+              Confirm & Continue
+            </Button>
           </Dialog>
         </>
       </MuiThemeProvider>
