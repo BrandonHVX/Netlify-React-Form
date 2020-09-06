@@ -4,11 +4,13 @@ import AppBar from "@material-ui/core/AppBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { List, ListItem, ListItemText } from "@material-ui/core/";
 import Button from "@material-ui/core/Button";
+
 const encode = data => {
   return Object.keys(data)
     .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&");
 };
+
 export class Confirm extends Component {
   continue = e => {
     e.preventDefault();
